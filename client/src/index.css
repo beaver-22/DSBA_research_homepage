@@ -1,0 +1,274 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Design System: Modern Academic Minimalism
+   - Primary Colors: Deep Navy (#1a3a52) + Bright Academic Blue (#0066cc)
+   - Accent Colors: Warm Gray (#4a5568), Soft Gray (#f7fafc)
+   - Semantic Colors: Black (completed), Blue (in-progress), Red (future)
+   - Typography: Inter (English display) + Noto Sans KR (Korean body/display)
+*/
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Custom semantic colors for research status */
+  --color-status-completed: #000000;
+  --color-status-inprogress: #0066cc;
+  --color-status-future: #e53e3e;
+}
+
+:root {
+  /* Primary colors - Sophisticated Deep Navy + Bright Blue */
+  --primary: #0052a3;
+  --primary-foreground: #ffffff;
+  --sidebar-primary: #003d7a;
+  --sidebar-primary-foreground: #ffffff;
+  
+  /* Chart colors */
+  --chart-1: #0052a3;
+  --chart-2: #0f1419;
+  --chart-3: #2d3748;
+  --chart-4: #1a202c;
+  --chart-5: #0f1419;
+  
+  /* Background and text */
+  --radius: 0.5rem;
+  --background: #fafbfc;
+  --foreground: #0f1419;
+  --card: #f5f6f8;
+  --card-foreground: #0f1419;
+  --popover: #ffffff;
+  --popover-foreground: #0f1419;
+  
+  /* Secondary and muted */
+  --secondary: #eef1f6;
+  --secondary-foreground: #0f1419;
+  --muted: #d9dfe8;
+  --muted-foreground: #4a5568;
+  --accent: #0052a3;
+  --accent-foreground: #ffffff;
+  
+  /* Destructive and border */
+  --destructive: #d32f2f;
+  --destructive-foreground: #ffffff;
+  --border: #d9dfe8;
+  --input: #d9dfe8;
+  --ring: #0052a3;
+  
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f1419;
+  --sidebar-accent: #eef1f6;
+  --sidebar-accent-foreground: #0052a3;
+  --sidebar-border: #d9dfe8;
+  --sidebar-ring: #0052a3;
+}
+
+.dark {
+  --primary: #0066cc;
+  --primary-foreground: #ffffff;
+  --sidebar-primary: #0080ff;
+  --sidebar-primary-foreground: #ffffff;
+  --background: #0f1419;
+  --foreground: #e2e8f0;
+  --card: #1a202c;
+  --card-foreground: #e2e8f0;
+  --popover: #1a202c;
+  --popover-foreground: #e2e8f0;
+  --secondary: #2d3748;
+  --secondary-foreground: #cbd5e0;
+  --muted: #4a5568;
+  --muted-foreground: #a0aec0;
+  --accent: #0066cc;
+  --accent-foreground: #ffffff;
+  --destructive: #fc8181;
+  --destructive-foreground: #0f1419;
+  --border: #2d3748;
+  --input: #2d3748;
+  --ring: #0080ff;
+  --chart-1: #0066cc;
+  --chart-2: #0080ff;
+  --chart-3: #4299e1;
+  --chart-4: #63b3ed;
+  --chart-5: #90cdf4;
+  --sidebar: #1a202c;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-accent: #2d3748;
+  --sidebar-accent-foreground: #0080ff;
+  --sidebar-border: #2d3748;
+  --sidebar-ring: #0080ff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans KR', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  /* Typography System - clean sans-serif for both KR and EN */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    @apply text-4xl leading-snug;
+  }
+
+  h2 {
+    @apply text-2xl leading-normal;
+  }
+
+  h3 {
+    @apply text-xl leading-relaxed;
+    font-weight: 600;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  small {
+    @apply text-sm leading-normal;
+  }
+}
+
+@layer components {
+  /**
+   * Custom container utility that centers content and adds responsive padding.
+   *
+   * This overrides Tailwind's default container behavior to:
+   * - Auto-center content (mx-auto)
+   * - Add responsive horizontal padding
+   * - Set max-width for large screens
+   *
+   * Usage: <div className="container">...</div>
+   *
+   * For custom widths, use max-w-* utilities directly:
+   * <div className="max-w-6xl mx-auto px-4">...</div>
+   */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem; /* 16px - mobile padding */
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+  
+  /* Status badge styles */
+  .status-badge {
+    @apply inline-flex items-center justify-center w-3 h-3 rounded-full;
+  }
+  
+  .status-completed {
+    @apply bg-black;
+  }
+  
+  .status-inprogress {
+    @apply bg-blue-600;
+  }
+  
+  .status-future {
+    @apply bg-red-600;
+  }
+  
+  /* Research card styles */
+  .research-card {
+    @apply relative p-6 bg-card text-card-foreground rounded-lg border border-border transition-all duration-300;
+  }
+  
+  .research-card::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-1 rounded-t-lg transition-all duration-300;
+  }
+  
+  .research-card:hover {
+    @apply shadow-lg;
+  }
+  
+  .research-card.timeseries::before {
+    @apply bg-slate-800;
+  }
+  
+  .research-card.nlp::before {
+    @apply bg-slate-800;
+  }
+  
+  .research-card.vision::before {
+    @apply bg-slate-800;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem; /* 32px - desktop padding */
+      padding-right: 2rem;
+      max-width: 1280px; /* Standard content width */
+    }
+  }
+}
