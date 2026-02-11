@@ -36,6 +36,7 @@ interface ApplicationArea {
   papers?: Paper[];
   sections?: AppSection[];
   figureUrl?: string;
+  demoImages?: { title: string; url: string }[];
 }
 
 const researchTopics: ResearchTopic[] = [
@@ -132,7 +133,7 @@ const researchTopics: ResearchTopic[] = [
         title: 'Granularity Fusion Transformer: Learning multi-granularity patterns for time-series forecasting',
         authors: 'Jinwoo Park, Hyeongwon Kang, Seunghun Han, Pilsung Kang*',
         year: 2025,
-        venue: 'Knowledge-Based Systems, 320, 113644',
+        venue: 'Knowledge-Based Systems',
         description: '본 논문에서는 시계열 예측을 위해 multi-granularity 패턴을 결합하는 Granularity Fusion Transformer (GFT)를 제안합니다. 이 방법은 시계열을 거친 추세(coarse)와 세밀한 변동(fine)으로 나누어 각각의 특성을 학습한 뒤, 두 정보를 효과적으로 융합해 예측 성능을 높이는 것을 목표합니다.',
         figureUrl: '/papers/image 2.png',
         keywords: ['Granularity Decomposition', 'Fine Pattern Enhancement', 'Cross-attention Fusion'],
@@ -152,7 +153,7 @@ const researchTopics: ResearchTopic[] = [
         title: 'Multi-task Self-supervised Time-series Representation Learning',
         authors: 'Heejeong Choi, Pilsung Kang*',
         year: 2024,
-        venue: 'Information Sciences, 671, 120654',
+        venue: 'Information Sciences',
         description: '본 논문에서는 시계열 데이터의 분석을 위해 다중 작업 자가 지도 학습(Multi-Task Self-Supervised Learning) 프레임워크를 제안합니다. 이 방법은 시계열 데이터의 다양한 일관성을 학습하여, 다양한 다운스트림 작업(예: 분류, 예측, 이상 탐지)에서 사용될 수 있는 일반적이고 강력한 데이터 표현을 학습합니다.',
         figureUrl: '/papers/image 3.png',
         keywords: ['Multi-task SSL', 'Contrastive Learning', 'Uncertainty Weighting'],
@@ -172,7 +173,7 @@ const researchTopics: ResearchTopic[] = [
         title: 'Transformer-based Multivariate Time Series Anomaly Detection using Inter-Variable Attention Mechanism',
         authors: 'Hyeongwon Kang, Pilsung Kang*',
         year: 2024,
-        venue: 'Knowledge-Based Systems, 290, 111507',
+        venue: 'Knowledge-Based Systems',
         description: '이 논문에서는 다변수 시계열 데이터의 이상 탐지를 위해 변수 간 주의 메커니즘을 사용하는 Transformer 기반의 새로운 방법론인 Variable Temporal Transformer (VTT)를 제안합니다. 이 모델은 Transformer의 셀프 어텐션 메커니즘을 활용하여 변수 간 상관관계와 시간적 의존성을 효과적으로 모델링하여 이상을 탐지합니다.',
         figureUrl: '/papers/image 4.png',
         keywords: ['Variable Temporal Transformer', 'Inter-Variable Attention', 'F1PA%K Metric'],
@@ -206,7 +207,7 @@ const researchTopics: ResearchTopic[] = [
         title: 'UFORank: Unified Framework of Unsupervised Keyphrase Extraction for Long Documents',
         authors: 'Doyoon Kim, Pilsung Kang*',
         year: 2026,
-        venue: 'IEEE',
+        venue: 'IEEE ACCESS',
         description: '본 논문은 긴 문서 내의 핵심 키워드를 추출하기 위해 핵심어구 추출 프레임워크를 제안합니다. 이 모델은 토픽 중요도, 문서 구조 내의 위치에 기반한 어구의 가중치, 어구-토픽 유사도를 모두 고려하여 문서의 핵심 내용을 나타내는 키프레이즈를 추출합니다.',
         figureUrl: '/papers/image 5.png',
         keywords: ['Topic Importance', 'Position-bias Weighting', 'BERT-flow/Glow'],
@@ -326,6 +327,9 @@ const applicationAreas: ApplicationArea[] = [
       '운영 에이전트 (Operational Agents)'
     ],
     figureUrl: '/papers/image 8.png',
+    demoImages: [
+      { title: '시연 예시', url: '/papers/agenteg.webp' }
+    ],
     sections: [
       {
         title: '데이터 분석 에이전트 (Data Analysis Agents)',
@@ -391,7 +395,7 @@ const applicationAreas: ApplicationArea[] = [
       },
       {
         id: 'mm-2',
-        title: 'Technical Report of NICE Challenge at CVPR 2024: Caption Re-ranking Evaluation Using Ensembled CLIP and Consensus Scores',
+        title: 'Caption Re-ranking Evaluation Using Ensembled CLIP and Consensus Scores',
         authors: 'Kiyoon Jeong, Woojun Lee, Woongchan Nam, Minjeong Ma, Pilsung Kang*',
         year: 2024,
         venue: '(1st prize) Caption Re-ranking Topic, NICE Workshop, CVPR',
@@ -599,6 +603,20 @@ function ApplicationDetailPanel({ area }: { area: ApplicationArea }) {
                   </li>
                 ))}
               </ul>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Demo Images (for Agentic AI demo examples) */}
+      {area.demoImages && area.demoImages.length > 0 && (
+        <div className="space-y-6 mb-6">
+          {area.demoImages.map((demo, idx) => (
+            <div key={idx} className="max-w-2xl mx-auto">
+              <h4 className="text-sm font-bold text-foreground mb-3">{demo.title}</h4>
+              <div className="rounded-lg overflow-hidden border border-border bg-white">
+                <img src={demo.url} alt={demo.title} className="w-full h-auto object-contain" />
+              </div>
             </div>
           ))}
         </div>
