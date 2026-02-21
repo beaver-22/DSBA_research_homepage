@@ -107,3 +107,7 @@ temp/
 
 # Binary files
 *.deb
+
+# Manus debug artifacts
+.manus-logs/
+client/public/__manus__/
