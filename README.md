@@ -2,6 +2,9 @@
 
 서울대학교 데이터 사이언스 및 비즈니스 애널리틱스 연구실(DSBA Lab)의 연구 분야와 논문을 소개하는 웹 애플리케이션입니다.
 
+> ### [Demo Site](https://wireless-sen-moves-text.trycloudflare.com/)
+> 실제 동작하는 페이지를 확인하려면 위 링크를 클릭하세요.
+
 ## 기술 스택
 
 | 분류 | 기술 |
