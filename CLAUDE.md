@@ -21,26 +21,33 @@ No linter configured. No test files exist (vitest is available as a dev dependen
 
 ## Architecture
 
-**Monorepo structure with three directories:**
+**Monorepo structure (no pnpm workspaces):**
 
 - `client/` — React 19 SPA (Vite root). Entry: `client/src/main.tsx` → `App.tsx`
-- `server/` — Express server that serves the built SPA with client-side routing fallback
-- `shared/` — Constants shared between client and server
+- `server/` — Minimal Express server that serves the built SPA with catch-all `*` route for client-side routing
+- `shared/` — Constants shared between client and server (re-exported via `client/src/const.ts`)
 
-**Path aliases** (in both tsconfig and vite config):
+**Build pipeline:** Vite builds the client to `dist/public/`, then esbuild bundles `server/index.ts` to `dist/index.js` (ESM, external packages). Production server serves static files from `dist/public/` and falls back to `index.html` for all routes.
+
+**Path aliases** (configured in both `tsconfig.json` and `vite.config.ts`):
 - `@` → `client/src/`
 - `@shared` → `shared/`
 - `@assets` → `attached_assets/`
 
-**Routing:** Wouter (lightweight React Router alternative) with a custom patch that collects route paths to `window.__WOUTER_ROUTES__`. Routes defined in `client/src/App.tsx`.
+**Routing:** Wouter (lightweight React Router alternative) with a custom patch (`patches/wouter@3.7.1.patch`) that collects route paths to `window.__WOUTER_ROUTES__`. Routes defined in `client/src/App.tsx`. Currently only two routes: `/` (Home) and `/404` (NotFound).
 
 **UI components:** shadcn/ui (new-york style) built on Radix UI primitives, located in `client/src/components/ui/`. Configuration in `components.json`.
 
-**Styling:** Tailwind CSS v4 with `@theme` syntax. Design tokens defined as CSS variables in `client/src/index.css`. Typography uses Noto Serif KR (headings) and Noto Sans KR (body). Dark mode supported via `client/src/contexts/ThemeContext.tsx`.
+**Styling:** Tailwind CSS v4 with `@theme` syntax. Design tokens defined as CSS variables in `client/src/index.css`. Typography uses Noto Serif KR (headings) and Noto Sans KR (body). Dark mode supported via `client/src/contexts/ThemeContext.tsx` (currently locked to light mode with `switchable={false}`).
 
-**Animations:** Framer Motion for entrance animations and scroll-triggered effects.
+**Animations:** Framer Motion for entrance animations and scroll-triggered effects via Intersection Observer in `Home.tsx`.
 
-**Data:** Research content is hard-coded as TypeScript constants in `client/src/pages/Home.tsx` — no API data fetching currently.
+**Data model:** All research content is hard-coded as TypeScript constants in `client/src/pages/Home.tsx` (~900 lines). Key interfaces: `Paper`, `ResearchTopic`, `ApplicationArea`, `AppSection`. No API data fetching.
+
+**Component tree:**
+```
+App.tsx → ThemeProvider → TooltipProvider → Wouter Switch → Home | NotFound
+```
 
 ## Design System
 
@@ -48,6 +55,7 @@ The project follows "Modern Academic Minimalism" (documented in `ideas.md`):
 - Status colors: black (completed), blue (in-progress), red (future research)
 - Generous whitespace following academic design principles
 - Semantic color tokens in CSS variables for light/dark mode
+- `cn()` utility in `client/src/lib/utils.ts` (clsx + tailwind-merge) for conditional class composition
 
 ## Key Conventions
 

@@ -17,7 +17,7 @@ interface ResearchTopic {
   id: string;
   title: string;
   description: string;
-  topics: string[];
+  topics: { name: string; description: string }[];
   imageUrl: string;
   papers: Paper[];
 }
@@ -41,92 +41,15 @@ interface ApplicationArea {
 
 const researchTopics: ResearchTopic[] = [
   {
-    id: 'vision',
-    title: 'Computer Vision (CV)',
-    description: '강건한 모델 학습과 이상 탐지를 통해 산업 환경에서의 시각 인식을 고도화합니다.',
-    topics: [
-      '강건한 모델 학습 (Robust Industrial Perception)',
-      '이상 탐지 (Anomaly Detection)',
-      '지식 기반 이상 탐지 및 추리 (Knowledge-based Outlier Detection & Reasoning)'
-    ],
-    imageUrl: '/papers/CV_box.png',
-    papers: [
-      {
-        id: 'cv-1',
-        title: 'Multi-class Image Anomaly Detection for Practical Applications: Requirements and Robust Solutions',
-        authors: 'Jaehyuk Heo, Pilsung Kang*',
-        year: 2026,
-        venue: 'Neurocomputing, 671, 132660',
-        description: '본 논문에서는 실제 산업 환경에서 요구되는 multi-class image anomaly detection을 위해, 클래스 라벨이 없는 상황에서도 학습과 성능 유지가 가능한 semantic-aware anomaly detection 프레임워크인 HierCore를 제안합니다. HierCore는 의미론적 특징 기반의 클러스터링을 통해 클래스를 추정하고, 이미지 패치 특징을 계층적 메모리 구조에 저장함으로써 클래스 라벨에 강건한 다중 클래스 이상 탐지를 가능하게 합니다.',
-        figureUrl: '/papers/image.png',
-        keywords: ['Semantic Clustering', 'Hierarchical Memory Bank', 'Anomaly Scoring'],
-        methodology: [
-          { title: 'Semantic Clustering', detail: '훈련 단계에서 입력 이미지의 semantic embedding을 활용하여 이미지 간 의미적 유사도를 계산하고, 가장 가능성이 높은 클래스를 추정하여 해당 이미지를 대응되는 메모리 뱅크에 할당함으로써, 명시적 라벨 없이 클래스 분리 효과를 달성합니다.' },
-          { title: 'Hierarchical Memory Bank', detail: '정상 이미지의 지역적 패치 특징을 클래스별로 구성된 계층적 메모리 뱅크에 저장합니다. 전역 semantic 정보와 국소 시각 패턴을 함께 고려하여, 클래스 간 특징 중첩 상황에서도 대표적인 정상 패턴을 안정적으로 모델링합니다.' },
-          { title: 'Anomaly Scoring', detail: '입력 이미지의 패치 특징을 메모리 뱅크에 저장된 정상 패턴과 비교하여 이상 점수를 계산합니다. 클래스 추정 오류나 클래스 간 유사성이 존재하더라도 강건한 이상 탐지가 가능하도록 설계되었습니다.' }
-        ],
-        contributions: [
-          'Multi-class unsupervised image anomaly detection을 위한 두 가지 핵심 요구사항을 정의하고, 학습 및 평가 단계에서 클래스 정보 사용 여부에 따른 실용적 요구사항을 체계적으로 정리',
-          '네 개의 산업용 벤치마크 데이터셋을 활용하여 현실적인 4가지 시나리오에서 기존 방법들을 종합적으로 재평가',
-          'Semantic-aware hierarchical memory bank 기반 HierCore를 제안하여 모든 시나리오에서 안정적인 성능 유지',
-          '클래스 수 증가 및 클래스 간 시각적 유사성이 높은 환경에서도 강건한 이상 탐지 성능 달성'
-        ]
-      },
-      {
-        id: 'cv-2',
-        title: 'Patch-level proxy metric learning with coresets for precise anomaly localization',
-        authors: 'Hun Im, Pilsung Kang',
-        year: 2026,
-        venue: 'Engineering Applications of Artificial Intelligence, 163, 113094',
-        description: '본 논문에서는 기존 anomaly detection 방법들이 이상 위치의 정밀도 부족 문제를 가진다는 점을 지적하고, 이를 해결하기 위해 patch-level proxy metric learning과 coreset 기반 메모리 압축을 결합한 anomaly localization 프레임워크를 제안합니다. 제안 방법은 정상 패치 간 거리 구조를 명시적으로 학습하여, 미세한 이상 영역까지 정밀하게 탐지할 수 있습니다.',
-        figureUrl: '/papers/Framework.png',
-        keywords: ['Patch-level Anomaly Localization', 'Proxy-based Metric Learning', 'Coreset-based Normal Patch Memory'],
-        methodology: [
-          { title: 'Patch-level Anomaly Localization 문제 정의', detail: '이미지 단위 anomaly score는 정확하지만, 패치 단위 이상 위치 추정은 부정확한 기존 방법들의 한계를 분석하고, 단순 최근접 거리 기반 방식이 패치 간 의미적 관계를 충분히 반영하지 못함을 지적합니다.' },
-          { title: 'Proxy-based Metric Learning', detail: '정상 패치의 대표적인 중심 역할을 하는 proxy embeddings를 학습합니다. 패치-패치 간 직접 비교 대신, 패치-proxy 간 거리 기반 학습을 통해 안정적인 metric space를 구성하고, intra-class compactness와 inter-pattern separability를 동시에 강화합니다.' },
-          { title: 'Coreset 기반 정상 패치 메모리 구성', detail: '대규모 정상 패치 메모리를 그대로 사용하는 대신, 핵심 패치만을 선택하는 coreset 전략을 적용하여 메모리 효율성을 유지하면서도 정상 분포의 다양성을 보존합니다.' },
-          { title: 'Precise Anomaly Scoring', detail: '테스트 이미지의 패치 특징을 proxy 및 coreset 메모리와 비교하여 anomaly score를 산출합니다. 미세한 텍스처 변화나 국소적 결함도 효과적으로 강조되도록 설계되었습니다.' }
-        ],
-        contributions: [
-          'Patch-level anomaly localization 성능 향상을 위한 새로운 문제 설정 제안',
-          'Proxy metric learning을 anomaly detection에 도입하여 기존 거리 기반 방법의 한계 극복',
-          'Coreset 기반 메모리 압축과 성능의 균형을 달성하는 메모리 구성 전략 제시',
-          '다양한 결함 유형과 해상도 환경에서 산업용 anomaly detection 데이터셋에서의 정밀 localization 성능 검증'
-        ]
-      },
-      {
-        id: 'cv-3',
-        title: 'Detection and Defense: Student-Teacher Network for Adversarial Robustness',
-        authors: 'Kyoungchan Park, Pilsung Kang*',
-        year: 2024,
-        venue: 'IEEE Access, 12, 82742-82752',
-        description: '본 논문은 적대적 공격(adversarial attack)에 대한 신뢰성과 안전성을 보장하기 위해 학생-교사 네트워크(student-teacher network) 기반의 새로운 탐지 및 방어 방법을 제안합니다. 제안된 방법은 적대적 예제(adversarial examples, AEs)와 정상 예제(normal examples, NEs)를 구분하고, 방어 프로세스를 AEs에만 적용하여 NEs에 대한 분류 성능 저하를 최소화합니다.',
-        figureUrl: '/papers/image 1.png',
-        keywords: ['Student-Teacher Network', 'Adversarial Detection', 'Restoration Attack'],
-        methodology: [
-          { title: '학생-교사 네트워크를 통한 탐지 및 방어 통합', detail: '교사 네트워크(Teacher Network)는 분류기 역할을 하며, 학생 네트워크(Student Network)는 교사 네트워크의 왜곡되지 않은 숨겨진 계층(hidden layer) 특징을 예측하도록 학습합니다. 학생 네트워크와 교사 네트워크의 숨겨진 계층 특징 간의 차이를 기반으로 AEs를 탐지하고, AEs에 대해서는 학생 네트워크가 예측한 특징을 사용하여 올바른 분류 결과를 복구합니다.' },
-          { title: '복원 공격(Restoration Attack) 기법 도입', detail: 'AEs에 대한 방어 성능을 향상시키기 위해 복원 공격이라는 사전 처리 기법을 도입합니다. 복원 공격은 학생 네트워크의 숨겨진 계층 특징을 왜곡된 교사 네트워크의 특징으로부터 멀어지게 하여 AEs의 올바른 분류 결과를 복구할 수 있게 합니다.' },
-          { title: '광범위한 실험을 통한 성능 검증', detail: 'CIFAR-10, CIFAR-100, TinyImageNet 등의 대표적인 이미지 분류 데이터셋에서 실험을 수행하여 제안된 방법의 우수한 탐지 및 방어 성능을 입증합니다.' }
-        ],
-        contributions: [
-          '탐지와 방어를 통합하여 적대적 공격 여부를 인식하고, 탐지된 AEs에 대해서만 방어 프로세스를 적용하여 NEs에 대한 분류 성능 저하를 방지하는 최초의 방법 제안',
-          '복원 공격 기법을 통해 방어 성능을 추가적으로 개선하고, 완전한 화이트박스 공격(white-box attack)에서도 강력한 방어 성능 달성',
-          '완전한 화이트박스 공격에서도 높은 탐지 및 방어 성능을 유지하여, 적대적 공격에 대한 강인성 확인',
-          'CIFAR-10, CIFAR-100, TinyImageNet 등 다양한 데이터셋에서 기존의 최신 탐지 및 방어 방법과 비교하여 우수한 성능 입증'
-        ]
-      }
-    ]
-  },
-  {
     id: 'timeseries',
-    title: 'Time-Series (TS)',
-    description: '시계열 데이터의 예측, 이상 탐지, 표현 학습을 통합한 고급 분석 기술을 개발합니다.',
+    title: 'Time-Series Data Analytics',
+    description: '시계열 데이터의 예측, 이상 탐지, 표현 학습을 위한 고급 분석 기술을 개발합니다. 변화하는 산업·운영 환경에서도 안정적으로 동작하는 모델을 설계하고, 실제 의사결정에 활용 가능한 신뢰도 높은 분석 체계를 구축하는 것을 목표로 합니다.',
     topics: [
-      '시계열 예측 / 이상 탐지 / 표현 학습 (Forecasting / Anomaly Detection / Representation Learning)',
-      '분포 변화 대응 (Shift-robust Adaptation)',
-      '예지 보전 & 설명가능성 (Predictive Maintenance & Interpretability)'
+      { name: '시계열 예측 / 이상 탐지 / 표현 학습 (Forecasting / Anomaly Detection / Representation Learning)', description: '다변량 시계열 데이터를 기반으로 단기·장기 예측과 이상 탐지를 수행하는 모델을 연구합니다. 예측 오차 기반 이상 탐지, 재구성 기반 접근, 확률적 예측 등 다양한 방법을 탐구하며, 자기지도 학습을 활용한 표현 학습을 통해 레이블이 부족한 환경에서도 데이터의 잠재 구조와 동적 패턴을 효과적으로 포착하는 방법을 연구합니다.' },
+      { name: '분포 변화 대응 (Shift-robust Adaptation)', description: '시간의 흐름에 따라 발생하는 데이터 분포 변화(개념 변화, 계절성 변화, 환경 변화 등)에 강건하게 대응하는 학습 기법을 연구합니다. 도메인 적응, 온라인 학습, 테스트 타임 적응 등의 방법을 통해 재학습 비용을 최소화하면서도 실제 운영 환경에서 안정적인 성능을 유지하는 모델을 설계합니다.' },
+      { name: '예지 보전 & 설명가능성 (Predictive Maintenance & Interpretability)', description: '설비 및 시스템의 고장을 사전에 예측하여 유지보수 비용과 다운타임을 최소화하는 예지 보전 모델을 개발합니다. 동시에 중요 변수 기여도 분석, 시간 구간별 영향도 해석 등 설명 가능한 기법을 도입하여, 모델의 의사결정 과정을 현장에서 이해하고 신뢰할 수 있도록 하는 연구를 수행합니다.' }
     ],
-    imageUrl: '/papers/TS_box.png',
+    imageUrl: '/Keyword/ts_final.png',
     papers: [
       {
         id: 'ts-1',
@@ -193,14 +116,14 @@ const researchTopics: ResearchTopic[] = [
   },
   {
     id: 'nlp',
-    title: 'Natural Language Processing (NLP)',
-    description: '대규모 언어 모델의 평가, 안전성, 추론 능력을 향상시키는 연구를 수행합니다.',
+    title: 'Language Data Analytics',
+    description: '대규모 언어 모델의 평가, 안전성, 추론 능력을 체계적으로 고도화하는 연구를 수행합니다. 실제 서비스 환경에서 신뢰할 수 있고 통제 가능한 언어 모델을 구축하는 것을 목표로, 성능 검증부터 안전성 강화, 고급 추론 능력 향상까지 전주기적 연구를 진행합니다.',
     topics: [
-      'LLM 평가 및 정보 검색 (LLM Evaluation System & Information Retrieval)',
-      'AI 안전성 (AI Safety)',
-      'LLM 추론 (LLM Reasoning)'
+      { name: 'LLM 평가 및 정보 검색 (LLM Evaluation System & Information Retrieval)', description: '대규모 언어 모델의 성능을 다각도로 측정할 수 있으며 자동화된 평가 시스템을 구축합니다. 단순 정확도를 넘어 신뢰성·일관성·사실성 등을 종합적으로 분석하며, RAG 기술을 고도화하여 외부 지식에 근거한 응답 생성 능력을 극대화하는 방안을 연구합니다.' },
+      { name: 'AI 안전성 (AI Safety)', description: '대규모 언어 모델의 유해 발화, 편향성, 개인정보 노출 등 모델 배포 시 발생 가능한 리스크를 최소화하는 안전 정렬 기법을 연구합니다. 모델의 가치 정렬, 메커니즘 기반 내부 제어, 거부 및 완화 전략 수립 등을 통해 모델이 사회적 가치를 준수하도록 학습시키며, 실제 운영 환경에서의 통제 가능성을 체계적으로 관리하는 방법을 연구합니다.' },
+      { name: 'LLM 추론 (LLM Reasoning)', description: '복잡한 문제 해결을 위한 단계별 논리 전개 및 다단계 추론 능력을 강화합니다. 자기 검증, 외부 도구 및 계산 모듈 연계, 추론 경로 최적화 등 고도화된 학습 전략과 프롬프트 기법을 연구하여, 추론 과정의 신뢰성과 재현성을 보장하는 정교한 모델 지능 구현을 지향합니다.' }
     ],
-    imageUrl: '/papers/NLP_box.png',
+    imageUrl: '/Keyword/nlp_final.png',
     papers: [
       {
         id: 'nlp-1',
@@ -258,6 +181,83 @@ const researchTopics: ResearchTopic[] = [
         contributions: [
           '기업과 소비자의 제품에 대한 인식 간극 원인을 규명하고, 소비자가 느끼는 제품의 핵심 가치를 정량화할 수 있는 기준 제시',
           '고객의 리뷰를 활용하여 소비자가 직접적으로 경험한 제품의 고유 강점을 차별성, 긍정성, 탁월성을 기준으로 자동 발굴하는 워크플로우를 제시하여 실무에서 활용 가능'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'vision',
+    title: 'Visual Data Analytics',
+    description: '강건한 모델 학습과 이상 탐지를 중심으로, 실제 산업 환경에서 신뢰할 수 있는 시각 인식 기술을 연구합니다. 변화가 심한 현장 조건과 제한된 데이터 환경에서도 안정적으로 동작하는 지능형 비전 시스템을 구축하는 것을 목표로 합니다.',
+    topics: [
+      { name: '강건한 모델 학습 (Robust Industrial Perception)', description: '적대적 공격에 대한 신뢰성과 안정성을 확보함과 동시에, 산업 현장의 다양한 조명 변화, 오염, 센서 노이즈 등 복합적인 환경 변동에 강인한 시각 인식 모델을 학습합니다. 실제 환경의 복잡성을 반영한 데이터 증강 및 일반화 기법을 통해, 배포 이후에도 안정적이고 신뢰도 높은 성능을 유지하는 방법을 연구합니다.' },
+      { name: '이상 탐지 (Anomaly Detection)', description: '정상 데이터 중심 학습을 기반으로 미지의 결함이나 이상 패턴을 효과적으로 탐지하는 기술을 개발합니다. 소량 혹은 이미지 데이터 없이 학습하는 Few/Zero-Shot 이상 탐지뿐 아니라, 다중 클래스 환경에서의 이상 탐지 및 장기간 운영 환경을 고려한 지속 가능한 이상 탐지 방법을 연구합니다.' },
+      { name: '지식 기반 이상 탐지 및 추리 (Knowledge-based Outlier Detection & Reasoning)', description: '도메인 지식과 규칙 기반 정보를 통합하여 단순 탐지를 넘어 이상 원인 분석과 추론까지 수행하는 방법을 연구합니다. 시각적 단서와 구조적·맥락적 지식을 결합하여, 결과에 대한 근거를 제시할 수 있는 설명 가능한 이상 판단 체계를 구축합니다.' }
+    ],
+    imageUrl: '/Keyword/cv_final.png',
+    papers: [
+      {
+        id: 'cv-1',
+        title: 'Multi-class Image Anomaly Detection for Practical Applications: Requirements and Robust Solutions',
+        authors: 'Jaehyuk Heo, Pilsung Kang*',
+        year: 2026,
+        venue: 'Neurocomputing, 671, 132660',
+        description: '본 논문에서는 실제 산업 환경에서 요구되는 multi-class image anomaly detection을 위해, 클래스 라벨이 없는 상황에서도 학습과 성능 유지가 가능한 semantic-aware anomaly detection 프레임워크인 HierCore를 제안합니다. HierCore는 의미론적 특징 기반의 클러스터링을 통해 클래스를 추정하고, 이미지 패치 특징을 계층적 메모리 구조에 저장함으로써 클래스 라벨에 강건한 다중 클래스 이상 탐지를 가능하게 합니다.',
+        figureUrl: '/papers/image.png',
+        keywords: ['Semantic Clustering', 'Hierarchical Memory Bank', 'Anomaly Scoring'],
+        methodology: [
+          { title: 'Semantic Clustering', detail: '훈련 단계에서 입력 이미지의 semantic embedding을 활용하여 이미지 간 의미적 유사도를 계산하고, 가장 가능성이 높은 클래스를 추정하여 해당 이미지를 대응되는 메모리 뱅크에 할당함으로써, 명시적 라벨 없이 클래스 분리 효과를 달성합니다.' },
+          { title: 'Hierarchical Memory Bank', detail: '정상 이미지의 지역적 패치 특징을 클래스별로 구성된 계층적 메모리 뱅크에 저장합니다. 전역 semantic 정보와 국소 시각 패턴을 함께 고려하여, 클래스 간 특징 중첩 상황에서도 대표적인 정상 패턴을 안정적으로 모델링합니다.' },
+          { title: 'Anomaly Scoring', detail: '입력 이미지의 패치 특징을 메모리 뱅크에 저장된 정상 패턴과 비교하여 이상 점수를 계산합니다. 클래스 추정 오류나 클래스 간 유사성이 존재하더라도 강건한 이상 탐지가 가능하도록 설계되었습니다.' }
+        ],
+        contributions: [
+          'Multi-class unsupervised image anomaly detection을 위한 두 가지 핵심 요구사항을 정의하고, 학습 및 평가 단계에서 클래스 정보 사용 여부에 따른 실용적 요구사항을 체계적으로 정리',
+          '네 개의 산업용 벤치마크 데이터셋을 활용하여 현실적인 4가지 시나리오에서 기존 방법들을 종합적으로 재평가',
+          'Semantic-aware hierarchical memory bank 기반 HierCore를 제안하여 모든 시나리오에서 안정적인 성능 유지',
+          '클래스 수 증가 및 클래스 간 시각적 유사성이 높은 환경에서도 강건한 이상 탐지 성능 달성'
+        ]
+      },
+      {
+        id: 'cv-2',
+        title: 'Patch-level proxy metric learning with coresets for precise anomaly localization',
+        authors: 'Hun Im, Pilsung Kang',
+        year: 2026,
+        venue: 'Engineering Applications of Artificial Intelligence, 163, 113094',
+        description: '본 논문에서는 기존 anomaly detection 방법들이 이상 위치의 정밀도 부족 문제를 가진다는 점을 지적하고, 이를 해결하기 위해 patch-level proxy metric learning과 coreset 기반 메모리 압축을 결합한 anomaly localization 프레임워크를 제안합니다. 제안 방법은 정상 패치 간 거리 구조를 명시적으로 학습하여, 미세한 이상 영역까지 정밀하게 탐지할 수 있습니다.',
+        figureUrl: '/papers/Framework.png',
+        keywords: ['Patch-level Anomaly Localization', 'Proxy-based Metric Learning', 'Coreset-based Normal Patch Memory'],
+        methodology: [
+          { title: 'Patch-level Anomaly Localization 문제 정의', detail: '이미지 단위 anomaly score는 정확하지만, 패치 단위 이상 위치 추정은 부정확한 기존 방법들의 한계를 분석하고, 단순 최근접 거리 기반 방식이 패치 간 의미적 관계를 충분히 반영하지 못함을 지적합니다.' },
+          { title: 'Proxy-based Metric Learning', detail: '정상 패치의 대표적인 중심 역할을 하는 proxy embeddings를 학습합니다. 패치-패치 간 직접 비교 대신, 패치-proxy 간 거리 기반 학습을 통해 안정적인 metric space를 구성하고, intra-class compactness와 inter-pattern separability를 동시에 강화합니다.' },
+          { title: 'Coreset 기반 정상 패치 메모리 구성', detail: '대규모 정상 패치 메모리를 그대로 사용하는 대신, 핵심 패치만을 선택하는 coreset 전략을 적용하여 메모리 효율성을 유지하면서도 정상 분포의 다양성을 보존합니다.' },
+          { title: 'Precise Anomaly Scoring', detail: '테스트 이미지의 패치 특징을 proxy 및 coreset 메모리와 비교하여 anomaly score를 산출합니다. 미세한 텍스처 변화나 국소적 결함도 효과적으로 강조되도록 설계되었습니다.' }
+        ],
+        contributions: [
+          'Patch-level anomaly localization 성능 향상을 위한 새로운 문제 설정 제안',
+          'Proxy metric learning을 anomaly detection에 도입하여 기존 거리 기반 방법의 한계 극복',
+          'Coreset 기반 메모리 압축과 성능의 균형을 달성하는 메모리 구성 전략 제시',
+          '다양한 결함 유형과 해상도 환경에서 산업용 anomaly detection 데이터셋에서의 정밀 localization 성능 검증'
+        ]
+      },
+      {
+        id: 'cv-3',
+        title: 'Detection and Defense: Student-Teacher Network for Adversarial Robustness',
+        authors: 'Kyoungchan Park, Pilsung Kang*',
+        year: 2024,
+        venue: 'IEEE Access, 12, 82742-82752',
+        description: '본 논문은 적대적 공격(adversarial attack)에 대한 신뢰성과 안전성을 보장하기 위해 학생-교사 네트워크(student-teacher network) 기반의 새로운 탐지 및 방어 방법을 제안합니다. 제안된 방법은 적대적 예제(adversarial examples, AEs)와 정상 예제(normal examples, NEs)를 구분하고, 방어 프로세스를 AEs에만 적용하여 NEs에 대한 분류 성능 저하를 최소화합니다.',
+        figureUrl: '/papers/image 1.png',
+        keywords: ['Student-Teacher Network', 'Adversarial Detection', 'Restoration Attack'],
+        methodology: [
+          { title: '학생-교사 네트워크를 통한 탐지 및 방어 통합', detail: '교사 네트워크(Teacher Network)는 분류기 역할을 하며, 학생 네트워크(Student Network)는 교사 네트워크의 왜곡되지 않은 숨겨진 계층(hidden layer) 특징을 예측하도록 학습합니다. 학생 네트워크와 교사 네트워크의 숨겨진 계층 특징 간의 차이를 기반으로 AEs를 탐지하고, AEs에 대해서는 학생 네트워크가 예측한 특징을 사용하여 올바른 분류 결과를 복구합니다.' },
+          { title: '복원 공격(Restoration Attack) 기법 도입', detail: 'AEs에 대한 방어 성능을 향상시키기 위해 복원 공격이라는 사전 처리 기법을 도입합니다. 복원 공격은 학생 네트워크의 숨겨진 계층 특징을 왜곡된 교사 네트워크의 특징으로부터 멀어지게 하여 AEs의 올바른 분류 결과를 복구할 수 있게 합니다.' },
+          { title: '광범위한 실험을 통한 성능 검증', detail: 'CIFAR-10, CIFAR-100, TinyImageNet 등의 대표적인 이미지 분류 데이터셋에서 실험을 수행하여 제안된 방법의 우수한 탐지 및 방어 성능을 입증합니다.' }
+        ],
+        contributions: [
+          '탐지와 방어를 통합하여 적대적 공격 여부를 인식하고, 탐지된 AEs에 대해서만 방어 프로세스를 적용하여 NEs에 대한 분류 성능 저하를 방지하는 최초의 방법 제안',
+          '복원 공격 기법을 통해 방어 성능을 추가적으로 개선하고, 완전한 화이트박스 공격(white-box attack)에서도 강력한 방어 성능 달성',
+          '완전한 화이트박스 공격에서도 높은 탐지 및 방어 성능을 유지하여, 적대적 공격에 대한 강인성 확인',
+          'CIFAR-10, CIFAR-100, TinyImageNet 등 다양한 데이터셋에서 기존의 최신 탐지 및 방어 방법과 비교하여 우수한 성능 입증'
         ]
       }
     ]
@@ -507,23 +507,24 @@ function ResearchCard({ topic, selectedPaperId, onSelectPaper }: {
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
         <h3 className="text-2xl font-bold text-foreground mb-2 tracking-tight">{topic.title}</h3>
-        <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{topic.description}</p>
+        <p className="text-sm text-foreground/70 mb-5 leading-relaxed">{topic.description}</p>
 
         {/* Sub-topics */}
-        <ul className="space-y-2.5 mb-4">
+        <ul className="space-y-4 mb-4">
           {topic.topics.map((t, i) => {
-            const match = t.match(/^(.+?)\s*\((.+)\)$/);
-            const korean = match ? match[1] : t;
+            const match = t.name.match(/^(.+?)\s*\((.+)\)$/);
+            const korean = match ? match[1] : t.name;
             const english = match ? match[2] : null;
             return (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-slate-800 font-bold mt-0.5 shrink-0">▪</span>
-                <div>
-                  <p className="text-sm font-medium text-foreground leading-snug">{korean}</p>
-                  {english && (
-                    <p className="text-xs text-muted-foreground mt-0.5 pl-2">{english}</p>
-                  )}
+              <li key={i} className="rounded-md bg-slate-50 border border-slate-100 p-3">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-slate-800 shrink-0"></span>
+                  <p className="text-sm font-semibold text-foreground leading-snug">{korean}</p>
                 </div>
+                {english && (
+                  <p className="text-xs text-slate-500 mb-1.5 pl-3.5 italic">{english}</p>
+                )}
+                <p className="text-[13px] text-slate-800 pl-3.5 leading-relaxed">{t.description}</p>
               </li>
             );
           })}
@@ -545,13 +546,18 @@ function ResearchCard({ topic, selectedPaperId, onSelectPaper }: {
                       : 'hover:bg-slate-100 text-foreground'
                   }`}
                 >
-                  <p className="text-sm font-medium leading-snug line-clamp-2">{paper.title}</p>
-                  <p className={`text-xs mt-0.5 ${isSelected ? 'text-slate-300' : 'text-muted-foreground'}`}>
-                    {paper.year} · {paper.venue.split(',')[0]}
-                  </p>
-                  <p className={`text-xs mt-0.5 ${isSelected ? 'text-slate-400' : 'text-blue-600/70'}`}>
-                    {paper.authors}
-                  </p>
+                  <div className="flex items-start gap-2">
+                    <span className={`inline-block text-xl leading-none shrink-0 transition-transform duration-200 ${isSelected ? 'rotate-90' : ''}`}>▸</span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium leading-snug line-clamp-2">{paper.title}</p>
+                      <p className={`text-xs mt-0.5 ${isSelected ? 'text-slate-300' : 'text-muted-foreground'}`}>
+                        {paper.year} · {paper.venue.split(',')[0]}
+                      </p>
+                      <p className={`text-xs mt-0.5 ${isSelected ? 'text-slate-400' : 'text-blue-600/70'}`}>
+                        {paper.authors}
+                      </p>
+                    </div>
+                  </div>
                 </button>
               );
             })}
@@ -719,7 +725,7 @@ export default function Home() {
               : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-500'
           }`}
         >
-          Research Topics
+          Current Research Topics
         </button>
         <button
           onClick={() => setActiveTab('applications')}
@@ -729,7 +735,7 @@ export default function Home() {
               : 'bg-slate-100 text-slate-400 hover:bg-slate-200 hover:text-slate-500'
           }`}
         >
-          Applications & Research Directions
+          Applications & Future Directions
         </button>
       </nav>
 
@@ -737,7 +743,7 @@ export default function Home() {
       <main className="container py-12">
         {activeTab === 'research' && (
           <section>
-            <h2 className="text-2xl font-extrabold text-foreground mb-2 tracking-tight">Research Topics</h2>
+            <h2 className="text-2xl font-extrabold text-foreground mb-2 tracking-tight">Current Research Topics</h2>
             <p className="text-sm text-muted-foreground mb-10">
               데이터 기반의 지능형 알고리즘 개발을 통해 산업 문제를 해결하고, 신뢰할 수 있는 AI 기술의 미래를 만들어갑니다.
             </p>
@@ -823,7 +829,7 @@ export default function Home() {
         {activeTab === 'applications' && (
           <section>
             <h2 className="text-2xl font-extrabold text-foreground mb-2 tracking-tight">
-              Applications & Research Directions
+              Applications & Future Directions
             </h2>
             <p className="text-sm text-muted-foreground mb-10">
               우리 연구실은 다양한 산업 분야에 AI 기술을 적용하고 있으며, 향후 확장 방향을 지속적으로 모색하고 있습니다.
@@ -885,9 +891,9 @@ export default function Home() {
             <div>
               <h3 className="text-sm font-bold text-foreground mb-2 tracking-tight">Research Areas</h3>
               <ul className="text-xs text-muted-foreground space-y-1">
-                <li>Computer Vision</li>
-                <li>Time-Series Analysis</li>
-                <li>Natural Language Processing</li>
+                <li>Time-Series Data Analytics</li>
+                <li>Language Data Analytics</li>
+                <li>Visual Data Analytics</li>
               </ul>
             </div>
           </div>
